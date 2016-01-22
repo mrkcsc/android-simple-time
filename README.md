@@ -12,6 +12,18 @@ compile 'com.miguelgaeta.android-simple-time:simple-time:1.0.0'
 
 ```
 
+When including in your gradle file you must add this exclusion block to your `android` namespace.
+
+```groovy
+
+packagingOptions {
+
+    // Pretty time exclusion.
+    exclude 'META-INF/INDEX.LIST'
+}
+
+```
+
 ### Configuration
 
 TODO
