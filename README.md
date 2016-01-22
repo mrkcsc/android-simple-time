@@ -1,14 +1,14 @@
 ### Android Simple Time
 
-A simple ISO_8601 full format time formatter, parser and conversion utility.  Parsing and conversions and handled by Androids SimpleTimeFormatter utility and formatting is delegated to PrettyTime.
+A simple [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) time formatter, parser and conversion utility for Android.  Parsing and conversions and handled by the [SimpleTimeFormatter](http://developer.android.com/reference/java/text/SimpleDateFormat.html) utility and formatting is delegated to [PrettyTime](http://www.ocpsoft.org/prettytime/).
 
 ### Installation
 
-[![Download](https://api.bintray.com/packages/mrkcsc/maven/com.miguelgaeta.message-parser/images/download.svg)](https://bintray.com/mrkcsc/maven/com.miguelgaeta.message-parser/_latestVersion)
+[![Download](https://api.bintray.com/packages/mrkcsc/maven/com.miguelgaeta.simple-time/images/download.svg)](https://bintray.com/mrkcsc/maven/com.miguelgaeta.simple-time/_latestVersion)
 
 ```groovy
 
-compile 'com.miguelgaeta.android-message-parser:message-parser:1.1.3'
+compile 'com.miguelgaeta.android-simple-time:simple-time:1.0.0'
 
 ```
 
