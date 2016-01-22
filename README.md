@@ -2,6 +2,8 @@
 
 A simple [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) time formatter, parser and conversion utility for Android.  Parsing and conversions and handled by the [SimpleTimeFormatter](http://developer.android.com/reference/java/text/SimpleDateFormat.html) utility and formatting is delegated to [PrettyTime](http://www.ocpsoft.org/prettytime/).
 
+Additionally contains [Snowflake](https://github.com/twitter/snowflake) conversion functions.
+
 ### Installation
 
 [![Download](https://api.bintray.com/packages/mrkcsc/maven/com.miguelgaeta.simple-time/images/download.svg)](https://bintray.com/mrkcsc/maven/com.miguelgaeta.simple-time/_latestVersion)
