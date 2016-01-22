@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
@@ -24,3 +28,5 @@ dependencies {
     // Formatting to human readable strings.
     compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
 }
+
+apply from: '../build.release-aar.gradle'
