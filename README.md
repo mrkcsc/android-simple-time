@@ -26,26 +26,6 @@ packagingOptions {
 
 ```
 
-### Configuration
-
-TODO
-
-```java
-
-// TODO
-
-```
-
-### Usage
-
-TODO
-
-```java
-
-// TODO
-
-```
-
 ### License
 
 *Copyright 2016 Miguel Gaeta*
