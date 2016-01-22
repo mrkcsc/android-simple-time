@@ -14,14 +14,19 @@ public class AppActivity extends AppCompatActivity {
 
         setContentView(R.layout.app_activity);
 
-        String testTime = "2016-01-21T17:07:18.134000+00:00";
-        Long millis = SimpleTime.getDefault().toMilliseconds(testTime);
-        String testTimeAgain = SimpleTime.getDefault().toUTCDateString(millis);
+        final String sampleDate_ISO_8601 = "2016-01-21T17:07:18.134000+00:00";
+        final Long sampleSnowflake = 140124670098800641L;
 
-        Log.i("SimpleTime", "Simple time: " + testTimeAgain);
+        final Long millis = SimpleTime.getDefault().parseDate(sampleDate_ISO_8601);
+
+        Log.i("SimpleTime", "Sample date_ISO_8601: " + sampleDate_ISO_8601 + ", as milliseconds: " + millis);
+        Log.i("SimpleTime", "Sample date milliseconds reformatted: " + SimpleTime.getDefault().toUTCDateString(millis));
+
         Log.i("SimpleTime", "Simple time: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis()));
         Log.i("SimpleTime", "Simple time: " + SimpleTime.getDefault().toRelativeTime(millis));
 
-        Log.i("SimpleTime", "Current time: " + SimpleTime.getDefault().toUTCDateString());
+        Log.i("SimpleTime", "Current time: " + SimpleTime.getDefault().currentTimeUTCDateString());
+
+        Log.i("SimpleTime", "Snowflake parse: " + SimpleTime.getDefault().parseSnowflake(sampleSnowflake));
     }
 }

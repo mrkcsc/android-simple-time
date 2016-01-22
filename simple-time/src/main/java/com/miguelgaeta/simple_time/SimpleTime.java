@@ -20,6 +20,11 @@ public class SimpleTime {
 
     private final PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
 
+    /**
+     * Create a new simple time instance.
+     *
+     * @param template The formatting template string for parsing and conversion.
+     */
     public SimpleTime(final String template) {
 
         if (template == null) {
@@ -36,32 +41,45 @@ public class SimpleTime {
         this.parser = new SimpleDateFormat(template, Locale.US);
     }
 
+    /**
+     * Return default simple time instance.
+     *
+     * @return Default instance.
+     */
     public static SimpleTime getDefault() {
 
         return Default.defaultInstance;
     }
 
+    /**
+     * Get the current local system time.
+     *
+     * @return Current Epoch time in milliseconds.
+     */
     public long currentTimeMillis() {
 
         return System.currentTimeMillis();
     }
 
-    public String toUTCDateString() {
+    /**
+     * Get the current local system time as a UTC date string.
+     *
+     * @return Date string represented as a UTC string in full ISO 8601 format.
+     */
+    public String currentTimeUTCDateString() {
 
         return toUTCDateString(currentTimeMillis());
     }
 
-    public String toUTCDateString(Long dateMillis) {
-
-        if (dateMillis == null) {
-
-            return null;
-        }
-
-        return formatter.format(new Date(dateMillis));
-    }
-
-    public long toMilliseconds(Long snowflake) {
+    /**
+     * Parses a snowflake and returns the corresponding number
+     * of milliseconds it represents.
+     *
+     * @param snowflake A nullable snowflake.
+     *
+     * @return Epoch time in milliseconds.
+     */
+    public long parseSnowflake(Long snowflake) {
 
         if (snowflake == null) {
             snowflake = 0L;
@@ -70,7 +88,15 @@ public class SimpleTime {
         return (snowflake >> 22) + 1420070400000L;
     }
 
-    public long toMilliseconds(String dateTime) {
+    /**
+     * Parses a date and returns the corresponding number
+     * of milliseconds it represents.
+     *
+     * @param dateTime Date string represented as a UTC string in full ISO 8601 format.
+     *
+     * @return Epoch time in milliseconds.
+     */
+    public long parseDate(String dateTime) {
 
         if (dateTime == null) {
 
@@ -87,6 +113,14 @@ public class SimpleTime {
         }
     }
 
+    /**
+     * Converts a Epoch time in milliseconds to a
+     * human readable string relative to the current time.
+     *
+     * @param dateMillis Epoch time in milliseconds.
+     *
+     * @return Human readable string relative to the current time.
+     */
     public String toRelativeTime(final Long dateMillis) {
 
         if (dateMillis == null) {
@@ -101,6 +135,28 @@ public class SimpleTime {
         return prettyTime.format(new Date(dateMillis));
     }
 
+    /**
+     * Converts a Epoch time in milliseconds to a UTC
+     * date string.
+     *
+     * @param dateMillis Epoch time in milliseconds.
+     *
+     * @return Date string represented as a UTC string in full ISO 8601 format.
+     */
+    public String toUTCDateString(Long dateMillis) {
+
+        if (dateMillis == null) {
+
+            return null;
+        }
+
+        return formatter.format(new Date(dateMillis));
+    }
+
+    /**
+     * Default simple time instance uses the most robust version of
+     * the ISO 8601 format as the template.
+     */
     private static class Default {
 
         static final String template = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ";
