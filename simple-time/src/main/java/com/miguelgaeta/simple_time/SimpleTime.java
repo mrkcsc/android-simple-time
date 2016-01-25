@@ -6,6 +6,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -17,6 +18,8 @@ public class SimpleTime {
 
     private final SimpleDateFormat parser;
     private final SimpleDateFormat formatter;
+
+    private final Locale locale;
 
     private final PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
 
@@ -40,6 +43,7 @@ public class SimpleTime {
 
         this.formatter = formatter;
         this.parser = new SimpleDateFormat(template, locale);
+        this.locale = locale;
     }
 
     /**
@@ -118,40 +122,57 @@ public class SimpleTime {
      * Converts a Epoch time in milliseconds to a
      * human readable string relative to the current time.
      *
-     * @param dateMillis Epoch time in milliseconds.
+     * @param unixTimeMillis Unix time in milliseconds.
      *
      * @return Human readable string relative to the current time.
      */
-    public String toRelativeTime(final Long dateMillis) {
+    public String toRelativeTime(final Long unixTimeMillis) {
 
-        if (dateMillis == null) {
+        if (unixTimeMillis == null) {
 
             throw new AssertionError("Date must not be null.");
         }
 
-        prettyTime.setReference(dateMillis > currentTimeMillis() ?
-            new Date(dateMillis) :
+        prettyTime.setReference(unixTimeMillis > currentTimeMillis() ?
+            new Date(unixTimeMillis) :
             new Date());
 
-        return prettyTime.format(new Date(dateMillis));
+        return prettyTime.format(new Date(unixTimeMillis));
     }
 
     /**
      * Converts a Epoch time in milliseconds to a UTC
      * date string.
      *
-     * @param dateMillis Epoch time in milliseconds.
+     * @param unixTimeMillis Unix time in milliseconds.
      *
      * @return Date string represented as a UTC string in full ISO 8601 format.
      */
-    public String toUTCDateString(Long dateMillis) {
+    public String toUTCDateString(Long unixTimeMillis) {
 
-        if (dateMillis == null) {
+        if (unixTimeMillis == null) {
 
             return null;
         }
 
-        return formatter.format(new Date(dateMillis));
+        return formatter.format(new Date(unixTimeMillis));
+    }
+
+    /**
+     * Converts a unix time in milliseconds to a calendar
+     * instance configured to the provided locale.
+     *
+     * @param unixTimeMillis Unix time in milliseconds.
+     *
+     * @return Calendar representing the provided time.
+     */
+    public Calendar toCalendar(final Long unixTimeMillis) {
+
+        final Calendar calendar = Calendar.getInstance(locale);
+
+        calendar.setTimeInMillis(unixTimeMillis);
+
+        return calendar;
     }
 
     /**

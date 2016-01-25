@@ -28,5 +28,7 @@ public class AppActivity extends AppCompatActivity {
         Log.i("SimpleTime", "Current time: " + SimpleTime.getDefault().currentTimeUTCDateString());
 
         Log.i("SimpleTime", "Snowflake parse: " + SimpleTime.getDefault().parseSnowflake(sampleSnowflake));
+
+        Log.i("SimpleTime", "Calendar parse:" + SimpleTime.getDefault().toCalendar(millis).getTimeInMillis());
     }
 }
