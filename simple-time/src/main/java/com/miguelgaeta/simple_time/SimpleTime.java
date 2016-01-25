@@ -24,12 +24,13 @@ public class SimpleTime {
      * Create a new simple time instance.
      *
      * @param template The formatting template string for parsing and conversion.
+     * @param locale The locale we want user facing times to be in.
      */
-    public SimpleTime(final String template) {
+    public SimpleTime(final String template, Locale locale) {
 
-        if (template == null) {
+        if (template == null || locale == null) {
 
-            throw new AssertionError("Template must not be null.");
+            throw new AssertionError("Template and locale must not be null.");
         }
 
         @SuppressLint("SimpleDateFormat")
@@ -38,7 +39,7 @@ public class SimpleTime {
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         this.formatter = formatter;
-        this.parser = new SimpleDateFormat(template, Locale.US);
+        this.parser = new SimpleDateFormat(template, locale);
     }
 
     /**
@@ -161,6 +162,6 @@ public class SimpleTime {
 
         static final String template = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ";
 
-        static SimpleTime defaultInstance = new SimpleTime(template);
+        static SimpleTime defaultInstance = new SimpleTime(template, Locale.getDefault());
     }
 }
