@@ -1,4 +1,8 @@
-## 1.0.2 - 2016-01-16
+## 1.0.3 - 2016-01-25
+
+- Add string formatter for arbitrary template in current locale.
+
+## 1.0.2 - 2016-01-25
 
 - Add locale as a parameter to constructor.
 - Add a toCalendar method to convert unix timestamp to a calendar instance for date manipulation.
