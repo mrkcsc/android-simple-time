@@ -158,6 +158,18 @@ public class SimpleTime {
         return formatter.format(new Date(unixTimeMillis));
     }
 
+    public String toStringFormat(Long unixTimeMillis, String template) {
+
+        if (unixTimeMillis == null) {
+
+            return null;
+        }
+
+        final SimpleDateFormat formatter = new SimpleDateFormat(template, locale);
+
+        return formatter.format(unixTimeMillis);
+    }
+
     /**
      * Converts a unix time in milliseconds to a calendar
      * instance configured to the provided locale.

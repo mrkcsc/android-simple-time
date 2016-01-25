@@ -30,5 +30,6 @@ public class AppActivity extends AppCompatActivity {
         Log.i("SimpleTime", "Snowflake parse: " + SimpleTime.getDefault().parseSnowflake(sampleSnowflake));
 
         Log.i("SimpleTime", "Calendar parse:" + SimpleTime.getDefault().toCalendar(millis).getTimeInMillis());
+        Log.i("SimpleTime", "Custom template: " + SimpleTime.getDefault().toStringFormat(millis, "d MMMM, yyyy"));
     }
 }
