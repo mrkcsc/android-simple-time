@@ -1,3 +1,7 @@
+## 1.0.5 - 2016-01-25
+
+- Guard against future timestamp diffs on relative time.
+
 ## 1.0.4 - 2016-01-25
 
 - Switched to a pure Java library.
