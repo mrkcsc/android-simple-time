@@ -1,3 +1,7 @@
+## 1.0.4 - 2016-01-25
+
+- Switched to a pure Java library.
+
 ## 1.0.3 - 2016-01-25
 
 - Add string formatter for arbitrary template in current locale.
