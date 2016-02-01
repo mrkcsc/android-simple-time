@@ -126,14 +126,16 @@ public class SimpleTime {
      */
     public String toRelativeTime(final Long unixTimeMillis) {
 
-        if (unixTimeMillis == null) {
+        if (unixTimeMillis == null || unixTimeMillis == 0) {
 
-            throw new AssertionError("Date must not be null.");
+            return null;
         }
 
-        prettyTime.setReference(unixTimeMillis > currentTimeMillis() ?
+        final long currentTimeMillis = currentTimeMillis();
+
+        prettyTime.setReference(unixTimeMillis > currentTimeMillis ?
             new Date(unixTimeMillis) :
-            new Date());
+            new Date(currentTimeMillis));
 
         return prettyTime.format(new Date(unixTimeMillis));
     }
@@ -156,6 +158,16 @@ public class SimpleTime {
         return formatter.format(new Date(unixTimeMillis));
     }
 
+    /**
+     * Formats the specified unix time using the rules of this format.
+     *
+     * @param unixTimeMillis Unix time in milliseconds.
+     * @param template String template for formatting.
+     *
+     * @see java.util.Formatter
+     *
+     * @return Formatted string.
+     */
     public String toStringFormat(Long unixTimeMillis, String template) {
 
         if (unixTimeMillis == null) {
