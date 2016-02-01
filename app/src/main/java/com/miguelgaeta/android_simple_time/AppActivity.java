@@ -32,7 +32,7 @@ public class AppActivity extends AppCompatActivity {
         Log.i("SimpleTime", "Calendar parse:" + SimpleTime.getDefault().toCalendar(millis).getTimeInMillis());
         Log.i("SimpleTime", "Custom template: " + SimpleTime.getDefault().toStringFormat(millis, "d MMMM, yyyy"));
 
-        Log.e("SimpleTime", "Future time: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis() + 1000, true));
-        Log.e("SimpleTime", "Future time blocked: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis()));
+        Log.i("SimpleTime", "Future time: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis() + 1000, true));
+        Log.i("SimpleTime", "Future time blocked: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis()));
     }
 }
