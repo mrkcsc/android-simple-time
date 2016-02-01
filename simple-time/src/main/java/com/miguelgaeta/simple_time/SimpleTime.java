@@ -19,7 +19,7 @@ public class SimpleTime {
 
     private final Locale locale;
 
-    private final PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
+    private final PrettyTime prettyTime;
 
     /**
      * Create a new simple time instance.
@@ -38,6 +38,7 @@ public class SimpleTime {
 
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
+        this.prettyTime = new PrettyTime(locale);
         this.formatter = formatter;
         this.parser = new SimpleDateFormat(template, locale);
         this.locale = locale;
