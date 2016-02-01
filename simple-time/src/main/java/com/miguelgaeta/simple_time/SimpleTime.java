@@ -1,7 +1,5 @@
 package com.miguelgaeta.simple_time;
 
-import android.annotation.SuppressLint;
-
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
@@ -36,8 +34,7 @@ public class SimpleTime {
             throw new AssertionError("Template and locale must not be null.");
         }
 
-        @SuppressLint("SimpleDateFormat")
-        final SimpleDateFormat formatter = new SimpleDateFormat(template);
+        final SimpleDateFormat formatter = new SimpleDateFormat(template, locale);
 
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 

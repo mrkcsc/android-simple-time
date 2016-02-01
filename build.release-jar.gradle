@@ -8,26 +8,22 @@ def version = POM_VERSION_ID
 
 def localReleaseDest = "${buildDir}/release/${version}"
 
-task androidJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
-
-    //noinspection GroovyAssignabilityCheck
-    classpath += files(ext.androidJar)
+task javaJavadocs(type: Javadoc) {
+    source = sourceSets.main.java.srcDirs
 }
 
-task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+task javaJavadocsJar(type: Jar, dependsOn: javaJavadocs) {
     classifier = 'javadoc'
 
     //noinspection GroovyAssignabilityCheck
-    from androidJavadocs.destinationDir
+    from destinationDir
 }
 
-task androidSourcesJar(type: Jar) {
+task javaSourcesJar(type: Jar) {
     classifier = 'sources'
 
     //noinspection GroovyAssignabilityCheck
-    from android.sourceSets.main.java.srcDirs
+    from sourceSets.main.java.srcDirs
 }
 
 uploadArchives {
@@ -55,6 +51,6 @@ generateRelease.dependsOn(uploadArchives)
 generateRelease.dependsOn(zipRelease)
 
 artifacts {
-    archives androidSourcesJar
-    archives androidJavadocsJar
+    archives javaSourcesJar
+    archives javaJavadocsJar
 }
