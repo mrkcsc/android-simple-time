@@ -117,14 +117,23 @@ public class SimpleTime {
     }
 
     /**
+     * @see SimpleTime#toRelativeTime(Long)
+     */
+    public String toRelativeTime(final Long unixTimeMillis) {
+
+        return toRelativeTime(unixTimeMillis, false);
+    }
+
+    /**
      * Converts a Epoch time in milliseconds to a
      * human readable string relative to the current time.
      *
      * @param unixTimeMillis Unix time in milliseconds.
+     * @param allowFutureTime Allow timestamps in the future.
      *
      * @return Human readable string relative to the current time.
      */
-    public String toRelativeTime(final Long unixTimeMillis) {
+    public String toRelativeTime(final Long unixTimeMillis, boolean allowFutureTime) {
 
         if (unixTimeMillis == null || unixTimeMillis == 0) {
 
@@ -133,8 +142,8 @@ public class SimpleTime {
 
         final long currentTimeMillis = currentTimeMillis();
 
-        prettyTime.setReference(unixTimeMillis > currentTimeMillis ?
-            new Date(unixTimeMillis) :
+        prettyTime.setReference(unixTimeMillis >= currentTimeMillis && !allowFutureTime ?
+            new Date(unixTimeMillis + 1) :
             new Date(currentTimeMillis));
 
         return prettyTime.format(new Date(unixTimeMillis));
