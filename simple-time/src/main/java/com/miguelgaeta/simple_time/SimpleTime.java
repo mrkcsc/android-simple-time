@@ -111,7 +111,8 @@ public class SimpleTime {
             return parser.parse(dateTime).getTime();
 
         } catch (ParseException e) {
-
+            return 0L;
+        } catch (ArrayIndexOutOfBoundsException e) {
             return 0L;
         }
     }
