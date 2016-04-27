@@ -1,3 +1,7 @@
+## 1.0.6 - 2016-04-27
+
+Guard on bad parse result.
+
 ## 1.0.5 - 2016-01-25
 
 - Guard against future timestamp diffs on relative time.
