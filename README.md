@@ -10,7 +10,7 @@ Additionally contains [Snowflake](https://github.com/twitter/snowflake) conversi
 
 ```groovy
 
-compile 'com.miguelgaeta.android-simple-time:simple-time:1.0.6'
+compile 'com.miguelgaeta.android-simple-time:simple-time:1.0.7'
 
 ```
 
