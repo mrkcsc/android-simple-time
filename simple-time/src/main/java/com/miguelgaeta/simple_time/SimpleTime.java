@@ -114,6 +114,8 @@ public class SimpleTime {
             return 0L;
         } catch (ArrayIndexOutOfBoundsException e) {
             return 0L;
+        } catch (NumberFormatException e) {
+            return 0L;
         }
     }
 
