@@ -152,6 +152,27 @@ public class SimpleTime {
         return prettyTime.format(new Date(unixTimeMillis));
     }
 
+    public String toReadableAbsoluteTime(final Long unixTimeMillis) {
+        Calendar calendar = toCalendar(currentTimeMillis());
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        if (unixTimeMillis > calendar.getTimeInMillis()) {
+            return "Today at " + toStringFormat(unixTimeMillis, "hh:mm a");
+        }
+
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+
+        if (unixTimeMillis > calendar.getTimeInMillis()) {
+            return "Yesterday at " + toStringFormat(unixTimeMillis, "hh:mm a");
+        }
+
+        return toStringFormat(unixTimeMillis, "d MMMM, hh:mm a");
+    }
+
     /**
      * Converts a Epoch time in milliseconds to a UTC
      * date string.
