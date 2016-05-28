@@ -1,6 +1,10 @@
+## 1.1.0 - 2016-05-28
+
+- Remove pretty time dependency.  Make default instance thread safe.
+
 ## 1.0.6 - 1.0.7 - 2016-04-27
 
-Guard on bad parse result.
+- Guard on bad parse result.
 
 ## 1.0.5 - 2016-01-25
 
