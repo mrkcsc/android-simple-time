@@ -8,8 +8,6 @@ targetCompatibility= 1.7
 
 dependencies {
 
-    // Formatting to human readable strings.
-    compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
 }
 
 apply from: '../build.release-jar.gradle'

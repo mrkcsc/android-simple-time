@@ -19,20 +19,20 @@ public class AppActivity extends AppCompatActivity {
 
         final Long millis = SimpleTime.getDefault().parseDate(sampleDate_ISO_8601);
 
-        Log.i("SimpleTime", "Sample date_ISO_8601: " + sampleDate_ISO_8601 + ", as milliseconds: " + millis);
-        Log.i("SimpleTime", "Sample date milliseconds reformatted: " + SimpleTime.getDefault().toUTCDateString(millis));
+        Log.e("SimpleTime", "Sample date_ISO_8601: " + sampleDate_ISO_8601 + ", as milliseconds: " + millis);
+        Log.e("SimpleTime", "Sample date milliseconds reformatted: " + SimpleTime.getDefault().toUTCDateString(millis));
 
-        Log.i("SimpleTime", "Simple time: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis()));
-        Log.i("SimpleTime", "Simple time: " + SimpleTime.getDefault().toRelativeTime(millis));
+        Log.e("SimpleTime", "Simple time: " + SimpleTime.getDefault().toReadableTimeString(SimpleTime.getDefault().currentTimeMillis()));
+        Log.e("SimpleTime", "Simple time: " + SimpleTime.getDefault().toReadableTimeString(millis));
 
-        Log.i("SimpleTime", "Current time: " + SimpleTime.getDefault().currentTimeUTCDateString());
+        Log.e("SimpleTime", "Current time: " + SimpleTime.getDefault().currentTimeUTCDateString());
 
-        Log.i("SimpleTime", "Snowflake parse: " + SimpleTime.getDefault().parseSnowflake(sampleSnowflake));
+        Log.e("SimpleTime", "Snowflake parse: " + SimpleTime.getDefault().parseSnowflake(sampleSnowflake));
 
-        Log.i("SimpleTime", "Calendar parse:" + SimpleTime.getDefault().toCalendar(millis).getTimeInMillis());
-        Log.i("SimpleTime", "Custom template: " + SimpleTime.getDefault().toStringFormat(millis, "d MMMM, yyyy"));
+        Log.e("SimpleTime", "Calendar parse:" + SimpleTime.getDefault().toCalendar(millis).getTimeInMillis());
+        Log.e("SimpleTime", "Custom template: " + SimpleTime.getDefault().toDateString(millis));
 
-        Log.i("SimpleTime", "Future time: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis() + 1000, true));
-        Log.i("SimpleTime", "Future time blocked: " + SimpleTime.getDefault().toRelativeTime(SimpleTime.getDefault().currentTimeMillis()));
+        Log.e("SimpleTime", "Future time: " + SimpleTime.getDefault().toReadableTimeString(SimpleTime.getDefault().currentTimeMillis() + 1000));
+        Log.e("SimpleTime", "Future time blocked: " + SimpleTime.getDefault().toReadableTimeString(SimpleTime.getDefault().currentTimeMillis()));
     }
 }

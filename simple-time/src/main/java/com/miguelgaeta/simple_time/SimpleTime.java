@@ -1,7 +1,6 @@
 package com.miguelgaeta.simple_time;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,6 +11,7 @@ import java.util.TimeZone;
 /**
  * Created by Miguel Gaeta on 1/22/16.
  */
+@SuppressWarnings("DefaultFileTemplate")
 public class SimpleTime {
 
     private final SimpleDateFormat parser;
@@ -19,7 +19,9 @@ public class SimpleTime {
 
     private final Locale locale;
 
-    private final PrettyTime prettyTime;
+    private final DateFormat formatterTime;
+    private final DateFormat formatterDateTime;
+    private final DateFormat formatterDate;
 
     /**
      * Create a new simple time instance.
@@ -28,7 +30,6 @@ public class SimpleTime {
      * @param locale The locale we want user facing times to be in.
      */
     public SimpleTime(final String template, Locale locale) {
-
         if (template == null || locale == null) {
 
             throw new AssertionError("Template and locale must not be null.");
@@ -38,10 +39,13 @@ public class SimpleTime {
 
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        this.prettyTime = new PrettyTime(locale);
         this.formatter = formatter;
         this.parser = new SimpleDateFormat(template, locale);
         this.locale = locale;
+
+        this.formatterTime = DateFormat.getTimeInstance(DateFormat.SHORT, locale);
+        this.formatterDate = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
+        this.formatterDateTime = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
     }
 
     /**
@@ -51,7 +55,7 @@ public class SimpleTime {
      */
     public static SimpleTime getDefault() {
 
-        return Default.defaultInstance;
+        return Default.threadLocal.get();
     }
 
     /**
@@ -119,58 +123,36 @@ public class SimpleTime {
         }
     }
 
-    /**
-     * @see SimpleTime#toRelativeTime(Long)
-     */
-    public String toRelativeTime(final Long unixTimeMillis) {
+    public String toReadableTimeString(final Long unixTimeMillis) {
 
-        return toRelativeTime(unixTimeMillis, false);
-    }
-
-    /**
-     * Converts a Epoch time in milliseconds to a
-     * human readable string relative to the current time.
-     *
-     * @param unixTimeMillis Unix time in milliseconds.
-     * @param allowFutureTime Allow timestamps in the future.
-     *
-     * @return Human readable string relative to the current time.
-     */
-    public String toRelativeTime(final Long unixTimeMillis, boolean allowFutureTime) {
-
-        if (unixTimeMillis == null || unixTimeMillis == 0) {
-
-            return null;
-        }
-
-        final long currentTimeMillis = currentTimeMillis();
-
-        prettyTime.setReference(unixTimeMillis >= currentTimeMillis && !allowFutureTime ?
-            new Date(unixTimeMillis + 1) :
-            new Date(currentTimeMillis));
-
-        return prettyTime.format(new Date(unixTimeMillis));
-    }
-
-    public String toReadableAbsoluteTime(final Long unixTimeMillis) {
-        Calendar calendar = toCalendar(currentTimeMillis());
+        final Calendar calendar = toCalendar(currentTimeMillis());
 
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
+        final boolean englishLocale = locale.getLanguage().equals("en");
+
+        if (!englishLocale) {
+            if (unixTimeMillis > calendar.getTimeInMillis()) {
+                return formatterTime.format(unixTimeMillis);
+            } else {
+                return formatterDateTime.format(unixTimeMillis);
+            }
+        }
+
         if (unixTimeMillis > calendar.getTimeInMillis()) {
-            return "Today at " + toStringFormat(unixTimeMillis, "hh:mm a");
+            return "Today at " + formatterTime.format(unixTimeMillis);
         }
 
         calendar.add(Calendar.DAY_OF_MONTH, -1);
 
         if (unixTimeMillis > calendar.getTimeInMillis()) {
-            return "Yesterday at " + toStringFormat(unixTimeMillis, "hh:mm a");
+            return "Yesterday at " + formatterTime.format(unixTimeMillis);
         }
 
-        return toStringFormat(unixTimeMillis, "d MMMM, hh:mm a");
+        return formatterDateTime.format(unixTimeMillis);
     }
 
     /**
@@ -192,25 +174,21 @@ public class SimpleTime {
     }
 
     /**
-     * Formats the specified unix time using the rules of this format.
+     * Converts a Epoch time in milliseconds to a
+     * date string.
      *
      * @param unixTimeMillis Unix time in milliseconds.
-     * @param template String template for formatting.
      *
-     * @see java.util.Formatter
-     *
-     * @return Formatted string.
+     * @return Date string represented as a UTC string in full ISO 8601 format.
      */
-    public String toStringFormat(Long unixTimeMillis, String template) {
+    public String toDateString(final Long unixTimeMillis) {
 
         if (unixTimeMillis == null) {
 
             return null;
         }
 
-        final SimpleDateFormat formatter = new SimpleDateFormat(template, locale);
-
-        return formatter.format(unixTimeMillis);
+        return formatterDate.format(unixTimeMillis);
     }
 
     /**
@@ -234,10 +212,14 @@ public class SimpleTime {
      * Default simple time instance uses the most robust version of
      * the ISO 8601 format as the template.
      */
-    private static class Default {
+    static class Default {
 
-        static final String template = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ";
+        private static final String template = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ";
 
-        static SimpleTime defaultInstance = new SimpleTime(template, Locale.getDefault());
+        final static ThreadLocal<SimpleTime> threadLocal = new ThreadLocal<SimpleTime>() {
+            protected SimpleTime initialValue() {
+                return new SimpleTime(template, Locale.getDefault());
+            }
+        };
     }
 }
