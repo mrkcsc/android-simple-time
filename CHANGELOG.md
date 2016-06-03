@@ -1,3 +1,7 @@
+## 2.0.0 - 2016-04-28
+
+- Update to use java.time backport.
+
 ## 1.1.1 - 2016-04-28
 
 - Update `parseDate` to `parseUTCDate`
