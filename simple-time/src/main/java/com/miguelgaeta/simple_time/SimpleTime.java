@@ -1,12 +1,20 @@
 package com.miguelgaeta.simple_time;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import android.app.Application;
+
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.FormatStyle;
+
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by Miguel Gaeta on 1/22/16.
@@ -14,13 +22,22 @@ import java.util.TimeZone;
 @SuppressWarnings("DefaultFileTemplate")
 public class SimpleTime {
 
-    private final SimpleDateFormat formatter;
+    private final DateTimeFormatter formatter;
 
     private final Locale locale;
+    private final Calendar calendar;
+    private final ZoneId zoneId;
 
-    private final DateFormat formatterTime;
-    private final DateFormat formatterDateTime;
-    private final DateFormat formatterDate;
+    private final DateTimeFormatter formatterTime;
+    private final DateTimeFormatter formatterDateTime;
+    private final DateTimeFormatter formatterDate;
+
+    /**
+     * Initialize {@link AndroidThreeTen} backport.
+     */
+    public static void init(final Application application) {
+        AndroidThreeTen.init(application);
+    }
 
     /**
      * Create a new simple time instance.
@@ -34,16 +51,14 @@ public class SimpleTime {
             throw new AssertionError("Template and locale must not be null.");
         }
 
-        final SimpleDateFormat formatter = new SimpleDateFormat(template, locale);
-
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        this.formatter = formatter;
+        this.formatter = DateTimeFormatter.ofPattern(template);
         this.locale = locale;
+        this.calendar = Calendar.getInstance(locale);
+        this.zoneId = DateTimeUtils.toZoneId(calendar.getTimeZone());
 
-        this.formatterTime = DateFormat.getTimeInstance(DateFormat.SHORT, locale);
-        this.formatterDate = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
-        this.formatterDateTime = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
+        this.formatterTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale);
+        this.formatterDate = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
+        this.formatterDateTime = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT).withLocale(locale);
     }
 
     /**
@@ -63,7 +78,7 @@ public class SimpleTime {
      */
     public long currentTimeMillis() {
 
-        return System.currentTimeMillis();
+        return Instant.now().toEpochMilli();
     }
 
     /**
@@ -101,7 +116,7 @@ public class SimpleTime {
      *
      * @return Epoch time in milliseconds.
      */
-    public long parseUTCDate(String dateTime) {
+    public long parseUTCDate(final String dateTime) {
 
         if (dateTime == null) {
 
@@ -110,10 +125,8 @@ public class SimpleTime {
 
         try {
 
-            return formatter.parse(dateTime).getTime();
+            return LocalDateTime.parse(dateTime, formatter).toInstant(ZoneOffset.UTC).toEpochMilli();
 
-        } catch (ParseException e) {
-            return 0L;
         } catch (ArrayIndexOutOfBoundsException e) {
             return 0L;
         } catch (NumberFormatException e) {
@@ -123,7 +136,11 @@ public class SimpleTime {
 
     public String toReadableTimeString(final Long unixTimeMillis) {
 
-        final Calendar calendar = toCalendar(currentTimeMillis());
+        if (unixTimeMillis == null) {
+            return null;
+        }
+
+        final ZonedDateTime zonedDateTime = getZonedDateTime(unixTimeMillis);
 
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -134,23 +151,23 @@ public class SimpleTime {
 
         if (!englishLocale) {
             if (unixTimeMillis > calendar.getTimeInMillis()) {
-                return formatterTime.format(unixTimeMillis);
+                return formatterTime.format(zonedDateTime);
             } else {
-                return formatterDateTime.format(unixTimeMillis);
+                return formatterDateTime.format(zonedDateTime);
             }
         }
 
         if (unixTimeMillis > calendar.getTimeInMillis()) {
-            return "Today at " + formatterTime.format(unixTimeMillis);
+            return "Today at " + formatterTime.format(zonedDateTime);
         }
 
         calendar.add(Calendar.DAY_OF_MONTH, -1);
 
         if (unixTimeMillis > calendar.getTimeInMillis()) {
-            return "Yesterday at " + formatterTime.format(unixTimeMillis);
+            return "Yesterday at " + formatterTime.format(zonedDateTime);
         }
 
-        return formatterDateTime.format(unixTimeMillis);
+        return formatterDateTime.format(zonedDateTime);
     }
 
     /**
@@ -164,11 +181,10 @@ public class SimpleTime {
     public String toUTCDateString(Long unixTimeMillis) {
 
         if (unixTimeMillis == null) {
-
             return null;
         }
 
-        return formatter.format(new Date(unixTimeMillis));
+        return formatter.format(getZonedDateTime(unixTimeMillis, ZoneOffset.UTC));
     }
 
     /**
@@ -182,11 +198,20 @@ public class SimpleTime {
     public String toDateString(final Long unixTimeMillis) {
 
         if (unixTimeMillis == null) {
-
             return null;
         }
 
-        return formatterDate.format(unixTimeMillis);
+        return formatterDate.format(getZonedDateTime(unixTimeMillis));
+    }
+
+    private ZonedDateTime getZonedDateTime(final long unixTimeMillis, final ZoneId zoneId) {
+
+        return Instant.ofEpochMilli(unixTimeMillis).atZone(zoneId);
+    }
+
+    private ZonedDateTime getZonedDateTime(final long unixTimeMillis) {
+
+        return getZonedDateTime(unixTimeMillis, zoneId);
     }
 
     /**

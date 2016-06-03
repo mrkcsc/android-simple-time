@@ -14,10 +14,20 @@ public class AppActivity extends AppCompatActivity {
 
         setContentView(R.layout.app_activity);
 
-        final String sampleDate_ISO_8601 = "2016-06-03T18:25:26.000000+00:00";
+        final String sampleDate_ISO_8601 = "2016-06-03T18:24:51.967000+00:00";
         final Long sampleSnowflake = 140124670098800641L;
 
         final Long millis = SimpleTime.getDefault().parseUTCDate(sampleDate_ISO_8601);
+
+        //final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ");
+        //final LocalDateTime localDateTime = LocalDateTime.parse(sampleDate_ISO_8601, dateTimeFormatter);
+
+        //String iso8061 = "2016-06-03T18:24:51.967000+00:00";
+        //ZonedDateTime zdt = ZonedDateTime.parse(iso8061);
+
+        //long millis2 = zdt.toInstant().toEpochMilli();
+
+        //Log.e("SimpleTime", "l" + localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli() + " | " + millis2);
 
         Log.e("SimpleTime", "Sample date_ISO_8601: " + sampleDate_ISO_8601 + ", as milliseconds: " + millis);
         Log.e("SimpleTime", "Sample date milliseconds reformatted: " + SimpleTime.getDefault().toUTCDateString(millis));
