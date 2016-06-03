@@ -14,7 +14,6 @@ import java.util.TimeZone;
 @SuppressWarnings("DefaultFileTemplate")
 public class SimpleTime {
 
-    private final SimpleDateFormat parser;
     private final SimpleDateFormat formatter;
 
     private final Locale locale;
@@ -40,7 +39,6 @@ public class SimpleTime {
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         this.formatter = formatter;
-        this.parser = new SimpleDateFormat(template, locale);
         this.locale = locale;
 
         this.formatterTime = DateFormat.getTimeInstance(DateFormat.SHORT, locale);
@@ -103,7 +101,7 @@ public class SimpleTime {
      *
      * @return Epoch time in milliseconds.
      */
-    public long parseDate(String dateTime) {
+    public long parseUTCDate(String dateTime) {
 
         if (dateTime == null) {
 
@@ -112,7 +110,7 @@ public class SimpleTime {
 
         try {
 
-            return parser.parse(dateTime).getTime();
+            return formatter.parse(dateTime).getTime();
 
         } catch (ParseException e) {
             return 0L;

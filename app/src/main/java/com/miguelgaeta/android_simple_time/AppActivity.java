@@ -14,16 +14,16 @@ public class AppActivity extends AppCompatActivity {
 
         setContentView(R.layout.app_activity);
 
-        final String sampleDate_ISO_8601 = "2016-01-21T17:07:18.134000+00:00";
+        final String sampleDate_ISO_8601 = "2016-06-03T18:25:26.000000+00:00";
         final Long sampleSnowflake = 140124670098800641L;
 
-        final Long millis = SimpleTime.getDefault().parseDate(sampleDate_ISO_8601);
+        final Long millis = SimpleTime.getDefault().parseUTCDate(sampleDate_ISO_8601);
 
         Log.e("SimpleTime", "Sample date_ISO_8601: " + sampleDate_ISO_8601 + ", as milliseconds: " + millis);
         Log.e("SimpleTime", "Sample date milliseconds reformatted: " + SimpleTime.getDefault().toUTCDateString(millis));
 
-        Log.e("SimpleTime", "Simple time: " + SimpleTime.getDefault().toReadableTimeString(SimpleTime.getDefault().currentTimeMillis()));
-        Log.e("SimpleTime", "Simple time: " + SimpleTime.getDefault().toReadableTimeString(millis));
+        Log.e("SimpleTime", "Simple time now: " + SimpleTime.getDefault().toReadableTimeString(SimpleTime.getDefault().currentTimeMillis()));
+        Log.e("SimpleTime", "Simple time sam: " + SimpleTime.getDefault().toReadableTimeString(millis));
 
         Log.e("SimpleTime", "Current time: " + SimpleTime.getDefault().currentTimeUTCDateString());
 
