@@ -1,3 +1,7 @@
+## 1.1.1 - 2016-04-28
+
+- Update `parseDate` to `parseUTCDate`
+
 ## 1.1.0 - 2016-05-28
 
 - Remove pretty time dependency.  Make default instance thread safe.
