@@ -212,7 +212,7 @@ public class SimpleTime {
      */
     static class Default {
 
-        private static final String template = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ";
+        private static final String template = "yyyy-MM-dd'T'HH:mm:ss";
 
         final static ThreadLocal<SimpleTime> threadLocal = new ThreadLocal<SimpleTime>() {
             protected SimpleTime initialValue() {

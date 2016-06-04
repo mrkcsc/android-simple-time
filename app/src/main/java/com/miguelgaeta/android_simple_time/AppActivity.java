@@ -14,7 +14,7 @@ public class AppActivity extends AppCompatActivity {
 
         setContentView(R.layout.app_activity);
 
-        final String sampleDate_ISO_8601 = "2016-06-03T18:25:26.000000+00:00";
+        final String sampleDate_ISO_8601 = "2016-06-03T18:24:51.967000+00:00";
         final Long sampleSnowflake = 140124670098800641L;
 
         final Long millis = SimpleTime.getDefault().parseUTCDate(sampleDate_ISO_8601);
