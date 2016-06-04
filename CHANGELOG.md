@@ -1,3 +1,6 @@
+## 2.0.1
+- Update `parseUTCDate` to ignore milliseconds.
+
 ## 1.1.1 - 2016-04-28
 
 - Update `parseDate` to `parseUTCDate`
